@@ -7,7 +7,7 @@ const router = express.Router();
 
 /* GETS LIST OF USERS */
 
-router.get('/users', mWare.vipList(), async (req, res, next) => {
+router.get('/users', mWare.authCheck(), async (req, res, next) => {
     try {
       res.json( await uModel.find())
     } catch (err) {
@@ -17,7 +17,7 @@ router.get('/users', mWare.vipList(), async (req, res, next) => {
 
   /* REGISTERS NEW USER */
 
-router.post('/users/register', async (req, res, next) => {
+router.post('/register', async (req, res, next) => {
     try {
       const { username, password } = req.body
       const user = await uModel.findBy({ username }).first()
@@ -41,7 +41,7 @@ router.post('/users/register', async (req, res, next) => {
 
 /*  LOGIN USER  */
   
-router.post('/users/login', async (req, res, next) => {
+router.post('/login', async (req, res, next) => {
     try {
       const { username, password } = req.body
       const user = await uModel.findBy({ username}).first()
@@ -70,16 +70,16 @@ router.post('/users/login', async (req, res, next) => {
 //-----------------------------------------------------------------------------
 /* LOGS OUT USER  */
 //-----------------------------------------------------------------------------
-router.get('/logout', mWare.vipList(), async (req, res, next) => {
+router.get('/logout', mWare.authCheck(), async (req, res, next) => {
 	try {
 		req.session.destroy((err) => {
 			if (err) {
       
 				next(err)
 			} else {
-				res.status(204).json({
-					Message:"You have successfully logged out"
-				})
+				res.status(200).json({
+			    Message: "You have successfully logged out!"
+        })
 			}
 		})
 	} catch (err){

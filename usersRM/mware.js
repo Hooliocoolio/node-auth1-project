@@ -1,9 +1,9 @@
 const bcrypt = require('bcryptjs');
 const uModel = require('./model');
 
-function vipList() {
+function authCheck() {
     const authError = {
-        Error: "You have entered incorrect account information."
+        Error: "You are not authorized. Please log in."
     }
     return async (req, res, next) => {
         try {
@@ -38,5 +38,5 @@ function vipList() {
 }
 
 module.exports = {
-    vipList,
+    authCheck,
 }
